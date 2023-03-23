@@ -145,6 +145,49 @@ class Proyecto extends Sistema
         $rc = $st->rowCount();
         return $rc;
     }
+    public function newTask ($id,$data)
+    {
+        $this->db();
+        $sql = "INSERT INTO tarea (id_proyecto,tarea,avance) VALUES (:id_proyecto,:tarea,:avance)";
+        $st = $this->db->prepare($sql);
+        $st->bindParam(":id_proyecto", $id, PDO::PARAM_INT);
+        $st->bindParam(":tarea", $data['tarea'], PDO::PARAM_STR);
+        $st->bindParam(":avance", $data['avance'], PDO::PARAM_INT);
+        $st->execute();
+
+        $rc = $st->rowCount();
+        return $rc;
+    }
+    public function getTaskOne($id)
+    {
+        $data=null;
+        $this->db();
+        if (is_null($id)) {
+            die("Ocurrio un error");
+        } else {
+            $sql = "select * from tarea t left join proyecto p 
+            on p.id_proyecto = t.id_proyecto where t.id_tarea=:id";
+            $st = $this->db->prepare($sql);
+            $st->bindParam(":id", $id, PDO::PARAM_INT);
+            $st->execute();
+            $data = $st->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $data;
+    }
+    public function editTask($id,$id_tarea, $data)
+    {
+        $this->db();
+        $sql = "UPDATE tarea SET tarea = :tarea, avance=:avance where id_tarea= :id_tarea and id_proyecto=:id";
+        $st = $this->db->prepare($sql);
+        $st->bindParam(":id", $id, PDO::PARAM_INT);
+        $st->bindParam(":id_tarea", $id_tarea, PDO::PARAM_INT);
+        $st->bindParam(":tarea", $data['tarea'], PDO::PARAM_STR);
+        $st->bindParam(":avance", $data['avance'], PDO::PARAM_INT);
+        $st->execute();
+
+        $rc = $st->rowCount();
+        return $rc;
+    }
 }
 
 $proyecto = new Proyecto; //Objeto de la clase Proyecto

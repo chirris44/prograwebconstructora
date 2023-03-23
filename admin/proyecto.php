@@ -79,13 +79,42 @@ switch ($action) {
         break;
     case 'newtask':
         $data = $proyecto->get($id);
+        if(isset($_POST['enviar'])){
+            $data2 = $_POST['data'];
+            $cantidad = $proyecto->newTask($id,$data2);
+            if ($cantidad) {
+                $proyecto->flash('success', 'Registro dado de alta con éxito');
+            } else {
+                $proyecto->flash('danger', 'Algo fallo');
+            }
+            $data_tarea = $proyecto->getTask($id);
+            include('views/proyecto/tarea.php');
+        }else{
+            include('views/proyecto/tarea_form.php');
+        }
         //$data_tarea = $proyecto->getTask($id);
-        include('views/proyecto/tarea_form.php');
         break;
+        case 'editTask':
+            $data = $proyecto->get($id);
+            if (isset($_POST['enviar'])) {
+                $data2 = $_POST['data'];
+                $id_tarea = $_POST['data']['id_tarea'];
+                $cantidad = $proyecto->editTask($id, $id_tarea, $data2);
+                if ($cantidad) {
+                    $proyecto->flash('success', "Registro dado de alta con éxito");
+                } else {
+                    $proyecto->flash('danger', 'algo fallo');
+                }
+                $data_tarea = $proyecto->getTask($id);
+                include('views/proyecto/tarea.php');
+            } else {
+                $data_tarea = $proyecto->getTaskOne($id_tarea);
+                include('views/proyecto/tarea_form.php');
+            }
+            break;
     case 'getAll':
     default:
         $data = $proyecto->get(null);
         include("views/proyecto/index.php");
 }
 include("views/footer.php");
-?>
