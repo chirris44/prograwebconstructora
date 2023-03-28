@@ -18,7 +18,6 @@
                         <th scope="col">fecha de inicio</th>
                         <th scope="col">fecha de fin</th>
                         <th scope="col">id departamento</th>
-                        <th scope="col">archivo</th>
                         <th scope="col">operación</th>
                     </tr>
                 </thead>
@@ -35,17 +34,15 @@
                                 <?php echo $proyecto["descripcion"] ?>
                             </td>
                             <td>
-                                <?php echo $proyecto["fecha_inicio"] ?>
+                                <?php echo $proyecto["fecha_inicial"] ?>
                             </td>
                             <td>
-                                <?php echo $proyecto["fecha_fin"] ?>
+                                <?php echo $proyecto["fecha_final"] ?>
                             </td>
                             <td>
                                 <?php echo $proyecto["id_departamento"] ?>
                             </td>
-                            <td>
-                                <?php echo $proyecto["archivo"] ?>
-                            </td>
+
                             <td>
                                 <a class="btn btn-primary"
                                     href="proyecto.php?accion=actualizar&id_proyecto=<?php echo $proyecto["id_proyecto"] ?>"

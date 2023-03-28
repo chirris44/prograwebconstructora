@@ -3,13 +3,14 @@ require_once("controllers/proyecto.php");
 require_once("controllers/departamento.php");
 include_once("views/header.php");
 include_once("views/menu.php");
-
+$proyecto -> validateRol('Líder');
 $action = (isset($_GET["action"])) ? $_GET["action"] : null;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 $id_tarea = (isset($_GET['id_tarea'])) ? $_GET['id_tarea'] : null;
 
 switch ($action) {
     case 'new':
+        $proyecto -> validatePrivilegio('Proyecto Crear');
         $dataDepartamentos = $departamento->get(null);
         if (isset($_POST['enviar'])) {
             $data = $_POST['data'];
@@ -27,6 +28,7 @@ switch ($action) {
         }
         break;
     case 'delete':
+        $proyecto -> validatePrivilegio('Proyecto Eliminar');
         $cantidad = $proyecto->delete($id);
         if ($cantidad) {
             $proyecto->flash('success', 'Registro con el id= ' . $id . ' eliminado con éxito');
@@ -39,6 +41,7 @@ switch ($action) {
         }
         break;
     case 'edit':
+        $proyecto -> validatePrivilegio('Proyecto Actualizar');
         $dataDepartamentos = $departamento->get(null);
         if (isset($_POST['enviar'])) {
             $data = $_POST['data'];
@@ -59,11 +62,13 @@ switch ($action) {
         }
         break;
     case 'task':
+        $proyecto -> validatePrivilegio('Proyecto Leer');
         $data = $proyecto->get($id);
         $data_tarea = $proyecto->getTask($id);
         include('views/proyecto/tarea.php');
         break;
     case 'deletetask':
+        $proyecto -> validatePrivilegio('Proyecto Eliminar');
         $cantidad = $proyecto->deleteTask($id_tarea);
         if ($cantidad) {
             $proyecto->flash('success', 'Registro con el id= ' . $id_tarea . ' eliminado con éxito');
@@ -78,43 +83,52 @@ switch ($action) {
         }
         break;
     case 'newtask':
+        $proyecto -> validatePrivilegio('Proyecto Crear');
         $data = $proyecto->get($id);
-        if(isset($_POST['enviar'])){
+        if (isset($_POST['enviar'])) {
             $data2 = $_POST['data'];
-            $cantidad = $proyecto->newTask($id,$data2);
+            $cantidad = $proyecto->newTask($id, $data2);
             if ($cantidad) {
                 $proyecto->flash('success', 'Registro dado de alta con éxito');
+
             } else {
                 $proyecto->flash('danger', 'Algo fallo');
             }
             $data_tarea = $proyecto->getTask($id);
             include('views/proyecto/tarea.php');
-        }else{
+        } else {
             include('views/proyecto/tarea_form.php');
         }
         //$data_tarea = $proyecto->getTask($id);
+
         break;
-        case 'editTask':
-            $data = $proyecto->get($id);
-            if (isset($_POST['enviar'])) {
-                $data2 = $_POST['data'];
-                $id_tarea = $_POST['data']['id_tarea'];
-                $cantidad = $proyecto->editTask($id, $id_tarea, $data2);
-                if ($cantidad) {
-                    $proyecto->flash('success', "Registro dado de alta con éxito");
-                } else {
-                    $proyecto->flash('danger', 'algo fallo');
-                }
-                $data_tarea = $proyecto->getTask($id);
-                include('views/proyecto/tarea.php');
+
+    case 'edittask':
+        $proyecto -> validatePrivilegio('Proyecto Actualizar');
+        $data = $proyecto->get($id);
+        if (isset($_POST['enviar'])) {
+            $data2 = $_POST['data'];
+            $id_tarea = $_POST['data']['id_tarea'];
+            $cantidad = $proyecto->editTask($id,$id_tarea, $data2);
+            if ($cantidad) {
+                $proyecto->flash('success', 'Registro dado de alta con éxito');
             } else {
-                $data_tarea = $proyecto->getTaskOne($id_tarea);
-                include('views/proyecto/tarea_form.php');
-            }
-            break;
+                $proyecto->flash('danger', 'Algo fallo');
+            } 
+            $data_tarea = $proyecto->getTask($id);
+            include('views/proyecto/tarea.php');
+
+        } else {
+            $data_tarea = $proyecto->getTaskOne($id_tarea);
+            include('views/proyecto/tarea_form.php');
+        }
+        break;
+
     case 'getAll':
     default:
+    $proyecto -> validatePrivilegio('Proyecto Leer');
         $data = $proyecto->get(null);
         include("views/proyecto/index.php");
 }
 include("views/footer.php");
+?>

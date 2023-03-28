@@ -17,7 +17,7 @@
                         <th scope="col">descripción</th>
                         <th scope="col">fecha de inicio</th>
                         <th scope="col">fecha de fin</th>
-                        <th scope="col">archivo</th>
+                    
                         <th scope="col">operación</th>
                     </tr>
                 </thead>
@@ -36,15 +36,12 @@
                                 <?php echo $proyecto["descripcion"] ?>
                             </td>
                             <td>
-                                <?php echo $proyecto["fecha_inicio"] ?>
+                                <?php echo $proyecto["fecha_inicial"] ?>
                             </td>
                             <td>
-                                <?php echo $proyecto["fecha_fin"] ?>
+                                <?php echo $proyecto["fecha_final"] ?>
                             </td>
 
-                            <td>
-                                <?php echo $proyecto["archivo"] ?>
-                            </td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a href="proyecto.php?action=task&id=<?php echo $proyecto["id_proyecto"] ?>"
