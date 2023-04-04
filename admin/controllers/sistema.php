@@ -1,5 +1,8 @@
 <?php
 session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
 require_once('config.php');
 class Sistema
 {
@@ -120,13 +123,13 @@ class Sistema
                     if (!in_array($rol, $_SESSION['roles'])) {
                         $this->killApp('No tienes el rol adecuado');
                     }
-                }else{
-                $this->killApp('No tienes roles asignados'); 
+                } else {
+                    $this->killApp('No tienes roles asignados');
                 }
-            }else{
+            } else {
                 $this->killApp('No estas validado');
             }
-        }else{
+        } else {
             $this->killApp('No te has logueado');
         }
     }
@@ -138,13 +141,13 @@ class Sistema
                     if (!in_array($privilegio, $_SESSION['privilegios'])) {
                         $this->killApp('No tienes el privilegio adecuado');
                     }
-                }else{
-                $this->killApp('No tienes privilegios asignados'); 
+                } else {
+                    $this->killApp('No tienes privilegios asignados');
                 }
-            }else{
+            } else {
                 $this->killApp('No estas validado');
             }
-        }else{
+        } else {
             $this->killApp('No te has logueado');
         }
     }
@@ -155,7 +158,42 @@ class Sistema
         $this->flash('danger', $mensaje);
         include('views/footer_error.php');
         die();
-    } 
+    }
+    public function forgot($destinatario)
+    {
+        if ($this->validateEmail($destinatario)) {
+            $token=$this ->generarToken($destinatario);
+            require '../vendor/autoload.php';
+            $mail = new PHPMailer();
+            $mail->isSMTP();
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;
+            $mail->Host = 'smtp.gmail.com';
+            $mail->Port = 465;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->SMTPAuth = true;
+            $mail->Username = '20030115@itcelaya.edu.mx';
+            $mail->Password = 'cprfuoeonnqgnovu';
+            $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
+            $mail->addAddress($destinatario, 'Sistema Constructora');
+            $mail->Subject = 'Recuperacion de contraseña';
+            $mail->msgHTML('Esto es una prueba de recuperacion ' . $token);
+            if (!$mail->send()) {
+                echo 'Mailer Error: ' . $mail->ErrorInfo;
+            } else {
+                echo 'Message sent!';
+            }
+        }
+    }
+    public function generarToken($correo){
+        $token = "papaschicas";
+        $n=rand(1,1000000);
+        $x = md5(md5($token));
+        $y = md5($x . $n);
+        $token = md5($y);
+        $token= md5($token . 'calamardo');
+        $token = md5('patricio'). md5($token . $correo);
+        return $token;
+    }
 }
 $sistema = new Sistema;
 ?>

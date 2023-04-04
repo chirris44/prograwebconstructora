@@ -31,25 +31,25 @@ class Proyecto extends Sistema
         $nombrearchivo = str_replace(" ", "_", $data['proyecto']);
         $nombrearchivo = substr($nombrearchivo, 0, 20);
 
-        $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicial,
-        fecha_final, id_departamento) 
-        VALUES (:proyecto, :descripcion, :fecha_inicial, :fecha_final
+        $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,
+        fecha_fin, id_departamento) 
+        VALUES (:proyecto, :descripcion, :fecha_inicio, :fecha_fin
         ,:id_departamento)";
 
         $sesubio = $this->uploadfile("archivo", "uploads/proyectos/", $nombrearchivo);
 
         if ($sesubio) {
-            $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicial,
-        fecha_final, id_departamento, archivo) 
-        VALUES (:proyecto, :descripcion, :fecha_inicial, :fecha_final
+            $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,
+        fecha_fin, id_departamento, archivo) 
+        VALUES (:proyecto, :descripcion, :fecha_inicio, :fecha_fin
         ,:id_departamento, :archivo)";
         }
 
         $st = $this->db->prepare($sql);
         $st->bindParam(":proyecto", $data['proyecto'], PDO::PARAM_STR);
         $st->bindParam(":descripcion", $data['descripcion'], PDO::PARAM_STR);
-        $st->bindParam(":fecha_inicial", $data['fecha_inicial'], PDO::PARAM_STR);
-        $st->bindParam(":fecha_final", $data['fecha_final'], PDO::PARAM_STR);
+        $st->bindParam(":fecha_inicio", $data['fecha_inicio'], PDO::PARAM_STR);
+        $st->bindParam(":fecha_fin", $data['fecha_fin'], PDO::PARAM_STR);
         $st->bindParam(":id_departamento", $data['id_departamento'], PDO::PARAM_INT);
 
         if ($sesubio) {
@@ -88,13 +88,13 @@ class Proyecto extends Sistema
         if ($nombrearchivo) {
             $sql = "UPDATE proyecto 
         SET proyecto =:proyecto, descripcion =:descripcion,
-        fecha_inicial =:fecha_inicial, fecha_final =:fecha_final,
+        fecha_inicio =:fecha_inicio, fecha_fin =:fecha_fin,
         id_departamento =:id_departamento, archivo =:archivo
          where id_proyecto =:id";
         } else {
             $sql = "UPDATE proyecto 
             SET proyecto =:proyecto, descripcion =:descripcion,
-            fecha_inicial =:fecha_inicial, fecha_final =:fecha_final,
+            fecha_inicio =:fecha_inicio, fecha_fin =:fecha_fin,
             id_departamento =:id_departamento
              where id_proyecto =:id";
         }
@@ -102,8 +102,8 @@ class Proyecto extends Sistema
         $st->bindParam(":id", $id, PDO::PARAM_INT);
         $st->bindParam(":proyecto", $data['proyecto'], PDO::PARAM_STR);
         $st->bindParam(":descripcion", $data['descripcion'], PDO::PARAM_STR);
-        $st->bindParam(":fecha_inicial", $data['fecha_inicial'], PDO::PARAM_STR);
-        $st->bindParam(":fecha_final", $data['fecha_final'], PDO::PARAM_STR);
+        $st->bindParam(":fecha_inicio", $data['fecha_inicio'], PDO::PARAM_STR);
+        $st->bindParam(":fecha_fin", $data['fecha_fin'], PDO::PARAM_STR);
         $st->bindParam(":id_departamento", $data['id_departamento'], PDO::PARAM_INT);
         if ($nombrearchivo) {
             $st->bindParam(":archivo", $nombrearchivo, PDO::PARAM_STR);

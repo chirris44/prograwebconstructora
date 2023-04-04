@@ -32,25 +32,25 @@
 
     <div class="row">
         <div class="col-2">
-            <label for="fecha_inicial">Fecha Inicio:</label>
+            <label for="fecha_inicio">Fecha Inicio:</label>
         </div>
     </div>
     <div class="row">
         <div class="col-2">
-            <input required="required" type="date" class="" id="fecha_inicial" name="data[fecha_inicial]"
-                value="<?php echo isset($data[0]['fecha_inicial']) ? $data[0]['fecha_inicial'] : ''; ?>">
+            <input required="required" type="date" class="" id="fecha_inicio" name="data[fecha_inicio]"
+                value="<?php echo isset($data[0]['fecha_inicio']) ? $data[0]['fecha_inicio'] : ''; ?>">
         </div>
     </div>
 
     <div class="row">
         <div class="col-2">
-            <label for="fecha_final">Fecha Fin:</label>
+            <label for="fecha_fin">Fecha Fin:</label>
         </div>
     </div>
     <div class="row">
         <div class="col-2">
-            <input required="required" type="date" class="" id="fecha_final" name="data[fecha_final]"
-                value="<?php echo isset($data[0]['fecha_final']) ? $data[0]['fecha_final'] : ''; ?>">
+            <input required="required" type="date" class="" id="fecha_fin" name="data[fecha_fin]"
+                value="<?php echo isset($data[0]['fecha_fin']) ? $data[0]['fecha_fin'] : ''; ?>">
         </div>
     </div>
 

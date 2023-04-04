@@ -3,7 +3,7 @@ require_once("controllers/proyecto.php");
 require_once("controllers/departamento.php");
 include_once("views/header.php");
 include_once("views/menu.php");
-$proyecto -> validateRol('Líder');
+$proyecto -> validateRol('Lider');
 $action = (isset($_GET["action"])) ? $_GET["action"] : null;
 $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 $id_tarea = (isset($_GET['id_tarea'])) ? $_GET['id_tarea'] : null;
@@ -28,7 +28,7 @@ switch ($action) {
         }
         break;
     case 'delete':
-        $proyecto -> validatePrivilegio('Proyecto Eliminar');
+        $proyecto -> validatePrivilegio('Proyecto Borrar');
         $cantidad = $proyecto->delete($id);
         if ($cantidad) {
             $proyecto->flash('success', 'Registro con el id= ' . $id . ' eliminado con éxito');
@@ -68,7 +68,7 @@ switch ($action) {
         include('views/proyecto/tarea.php');
         break;
     case 'deletetask':
-        $proyecto -> validatePrivilegio('Proyecto Eliminar');
+        $proyecto -> validatePrivilegio('Proyecto Borrar');
         $cantidad = $proyecto->deleteTask($id_tarea);
         if ($cantidad) {
             $proyecto->flash('success', 'Registro con el id= ' . $id_tarea . ' eliminado con éxito');

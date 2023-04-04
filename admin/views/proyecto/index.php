@@ -36,10 +36,10 @@
                                 <?php echo $proyecto["descripcion"] ?>
                             </td>
                             <td>
-                                <?php echo $proyecto["fecha_inicial"] ?>
+                                <?php echo $proyecto["fecha_inicio"] ?>
                             </td>
                             <td>
-                                <?php echo $proyecto["fecha_final"] ?>
+                                <?php echo $proyecto["fecha_fin"] ?>
                             </td>
 
                             <td>
