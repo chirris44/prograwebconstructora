@@ -159,9 +159,10 @@ class Sistema
         include('views/footer_error.php');
         die();
     }
-    public function forgot($destinatario,$token)
+    public function forgot($destinatario)
     {
         if ($this->validateEmail($destinatario)) {
+            $token=$this ->generarToken($destinatario);
             require '../vendor/autoload.php';
             $mail = new PHPMailer();
             $mail->isSMTP();
@@ -170,21 +171,16 @@ class Sistema
             $mail->Port = 465;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->SMTPAuth = true;
-            $mail->Username = '20030115@itcelaya.edu.mx';
-            $mail->Password = 'cprfuoeonnqgnovu';
-            $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
+            $mail->Username = '19030406@itcelaya.edu.mx';
+            $mail->Password = 'yltqxblyeduegssh';
+            $mail->setFrom('19030406@itcelaya.edu.mx', 'Alejandra Plancarte');
             $mail->addAddress($destinatario, 'Sistema Constructora');
             $mail->Subject = 'Recuperacion de contraseña';
-            $mensaje = "
-                Estimado usuario. <br>
-                <a href=\"http://localhost/prograwebconstructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Presione aqui para recuperar la contraseña.</a> <br>
-                Atentamente Constructora.
-            ";
-            $mail->msgHTML($mensaje);
+            $mail->msgHTML('Esto es una prueba de recuperacion ' . $token);
             if (!$mail->send()) {
-                //echo 'Mailer Error: ' . $mail->ErrorInfo;
+                echo 'Mailer Error: ' . $mail->ErrorInfo;
             } else {
-                //echo 'Message sent!';
+                echo 'Message sent!';
             }
         }
     }
@@ -198,27 +194,6 @@ class Sistema
         $token = md5('patricio'). md5($token . $correo);
         return $token;
     }
-    public function loginSend($correo){
-        $rc=0;
-        if($this->validateEmail($correo)){
-            $this->db();
-            $sql = 'select correo from usuario where correo = :correo';
-            $st = $this->db->prepare($sql);
-            $st->bindParam(":correo", $correo, PDO::PARAM_STR);
-            $st->execute();
-            $data = $st->fetchAll(PDO::FETCH_ASSOC);
-            if(isset($data[0])){
-                $token=$this->generarToken($correo);
-                $sql2 = 'update usuario set token=:token where correo=:correo';
-                $st2 = $this->db->prepare($sql2);
-                $st2->bindParam(":token", $token, PDO::PARAM_STR);
-                $st2->bindParam(":correo", $correo, PDO::PARAM_STR);
-                $st2->execute();
-                $rc = $st2->rowCount();
-                $this->forgot($correo,$token);
-            }
-        }
-        return $rc;
-    }
 }
 $sistema = new Sistema;
+?>
