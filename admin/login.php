@@ -8,7 +8,24 @@ switch($action){
         include('views/login/index.php');
         break;
     case 'forgot':
+        include('views/login/forgot.php');
         break;
+    case 'recovery':
+            break;
+    case 'send':
+        //include('views/login/send.php');
+        if(isset($_POST['enviar'])){
+            $correo=$_POST['correo'];
+            $cantidad=$sistema->loginSend($correo);
+            if ($cantidad) {
+                $sistema->flash('success', 'Si se envio');
+                include('views/login/index.php');
+            } else {
+                $sistema->flash('danger', 'Tal vez se envio');
+                include('views/login/index.php');
+            }
+        }
+     break;
     case 'login':
         default:
         if(isset($_POST['enviar'])){
@@ -21,5 +38,3 @@ switch($action){
         break;        
 }
 include('views/footer.php');
-?>
-
