@@ -10,7 +10,6 @@ switch ($action) {
         include_once('views/login/index.php');
         break;
     case 'forgot':
-<<<<<<< HEAD
         include_once('views/login/forgot.php');
         break;
     case 'send':
@@ -24,26 +23,7 @@ switch ($action) {
             }
             include_once('views/login/index.php');
         }
-=======
-        include('views/login/forgot.php');
->>>>>>> parent of 1b993b0 (1704423)
         break;
-    case 'recovery':
-            break;
-    case 'send':
-        //include('views/login/send.php');
-        if(isset($_POST['enviar'])){
-            $correo=$_POST['correo'];
-            $cantidad=$sistema->loginSend($correo);
-            if ($cantidad) {
-                $sistema->flash('success', 'Si se envio');
-                include('views/login/index.php');
-            } else {
-                $sistema->flash('danger', 'Tal vez se envio');
-                include('views/login/index.php');
-            }
-        }
-     break;
     case 'login':
     default:
         if (isset($_POST['enviar'])) {
@@ -54,7 +34,6 @@ switch ($action) {
             } else {
                 include_once('views/login/index.php');
             }
-<<<<<<< HEAD
 
         }
         include_once('views/login/index.php');
@@ -63,10 +42,3 @@ switch ($action) {
 }
 include_once("views/footer.php");
 ?>
-=======
-        }
-        include('views/login/index.php');
-        break;        
-}
-include('views/footer.php');
->>>>>>> parent of 1b993b0 (1704423)

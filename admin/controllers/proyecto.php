@@ -182,9 +182,7 @@ class Proyecto extends Sistema
     public function editTask($id, $id_tarea, $data)
     {
         $this->db();
-        $sql = "UPDATE tarea SET tarea = :tarea,
-         avance=:avance where id_tarea= :id_tarea 
-         AND id_proyecto=:id";
+        $sql = "UPDATE tarea SET tarea = :tarea, avance=:avance where id_tarea= :id_tarea AND id_proyecto=:id";
         $st = $this->db->prepare($sql);
         $st->bindParam(":id", $id, PDO::PARAM_INT);
         $st->bindParam(":id_tarea", $id_tarea, PDO::PARAM_INT);

@@ -171,7 +171,6 @@ class Sistema
         include("views/footer_error.php");
         die();
     }
-<<<<<<< HEAD
 
     public function logout()
     {
@@ -183,12 +182,6 @@ class Sistema
     {
         if ($this->validateEmail($destinatario)) {
             require '../../vendor/autoload.php';
-=======
-    public function forgot($destinatario,$token)
-    {
-        if ($this->validateEmail($destinatario)) {
-            require '../vendor/autoload.php';
->>>>>>> parent of 1b993b0 (1704423)
             $mail = new PHPMailer();
             $mail->isSMTP();
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
@@ -197,18 +190,11 @@ class Sistema
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->SMTPAuth = true;
             $mail->Username = '20030115@itcelaya.edu.mx';
-<<<<<<< HEAD
             $mail->Password = 'tconvjrrlnbsjzpa';
             $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
             $mail->addAddress($destinatario, 'Sistema Constructora');
             $mail->Subject = 'Recuperacion de contraseña';
             $mail->msgHTML('Esto es una prueba de recuperacion ' . $token);
-=======
-            $mail->Password = 'cprfuoeonnqgnovu';
-            $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
-            $mail->addAddress($destinatario, 'Sistema Constructora');
-            $mail->Subject = 'Recuperacion de contraseña';
->>>>>>> parent of 1b993b0 (1704423)
             $mensaje = "
                 Estimado usuario. <br>
                 <a href=\"http://localhost/prograwebconstructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Presione aqui para recuperar la contraseña.</a> <br>
@@ -219,7 +205,6 @@ class Sistema
                 //echo 'Mailer Error: ' . $mail->ErrorInfo;
             } else {
                 //echo 'Message sent!';
-<<<<<<< HEAD
             }
             function save_mail($mail)
             {
@@ -229,8 +214,6 @@ class Sistema
                 imap_close($imapStream);
 
                 return $result;
-=======
->>>>>>> parent of 1b993b0 (1704423)
             }
         }
     }
@@ -246,7 +229,6 @@ class Sistema
         $token = md5('patricio') . md5($token . $correo);
         return $token;
     }
-<<<<<<< HEAD
 
     public function loginSend($correo)
     {
@@ -271,35 +253,9 @@ class Sistema
             }
         }
         return $data2;
-=======
-    public function loginSend($correo){
-        $rc=0;
-        if($this->validateEmail($correo)){
-            $this->db();
-            $sql = 'select correo from usuario where correo = :correo';
-            $st = $this->db->prepare($sql);
-            $st->bindParam(":correo", $correo, PDO::PARAM_STR);
-            $st->execute();
-            $data = $st->fetchAll(PDO::FETCH_ASSOC);
-            if(isset($data[0])){
-                $token=$this->generarToken($correo);
-                $sql2 = 'update usuario set token=:token where correo=:correo';
-                $st2 = $this->db->prepare($sql2);
-                $st2->bindParam(":token", $token, PDO::PARAM_STR);
-                $st2->bindParam(":correo", $correo, PDO::PARAM_STR);
-                $st2->execute();
-                $rc = $st2->rowCount();
-                $this->forgot($correo,$token);
-            }
-        }
-        return $rc;
->>>>>>> parent of 1b993b0 (1704423)
     }
 }
 
 $sistema = new Sistema;
-<<<<<<< HEAD
 
 ?>
-=======
->>>>>>> parent of 1b993b0 (1704423)
