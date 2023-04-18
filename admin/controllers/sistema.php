@@ -194,11 +194,11 @@ class Sistema
             $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
             $mail->addAddress(utf8_decode($destinatario), 'Sistema Constructora');
             $mail->Subject = utf8_decode('Recuperación de contraseña');
-            $mensaje = "
-            <p>Estimado usuario</p>
-            <p>Presione <a href=\"http://localhost/prograweb1/prograweb1/constructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Aquí</a> para recuperar la contraseña</p>
-            <p>Atentamente la Constructora.</p>
-            ";
+            $mensaje =  "
+            Estimado usuario. <br>
+            <a href=\"http://localhost/prograwebconstructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Presione aqui para recuperar la contraseña.</a> <br>
+            Atentamente Constructora.
+        ";
             $mensaje = utf8_decode($mensaje);
             $mail->msgHTML($mensaje);
             if (!$mail->send()) {
@@ -253,6 +253,41 @@ class Sistema
             }
         }
         return $data2;
+    }
+    public function validateToken($correo, $token){
+        if(strlen($token)==64){
+            if($this->validateEmail($correo)){
+                $this->db();
+                $sql = "SELECT correo FROM usuario where correo=:correo and token=:token";
+                $st = $this->db->prepare($sql);
+                $st->bindParam(':correo', $correo, PDO::PARAM_STR);
+                $st->bindParam(':token', $token, PDO::PARAM_STR);
+                $st->execute();
+                $data = $st->fetchAll(PDO::FETCH_ASSOC);
+                if(isset($data[0])){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public function resetPassword($correo,$token,$contrasena){
+        $cantidad=0;
+        if(strlen($token)==64 and strlen($contrasena)>0){
+            if($this->validateEmail($correo)){
+                $contrasena=md5($contrasena);
+                $this->db();
+                $sql = "UPDATE usuario set contrasena=:contrasena,token=null 
+                        where correo=:correo and token=:token";
+                $st = $this->db->prepare($sql);
+                $st->bindParam(':correo', $correo, PDO::PARAM_STR);
+                $st->bindParam(':token', $token, PDO::PARAM_STR);
+                $st->bindParam(':contrasena', $contrasena, PDO::PARAM_STR);
+                $st->execute();
+                $cantidad = $st->rowCount();
+            }
+        }
+        return $cantidad;
     }
 }
 

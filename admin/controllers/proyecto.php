@@ -24,56 +24,71 @@ class Proyecto extends Sistema
         return $data;
     }
 
-    public function new ($data)
+    public function new($data)
     {
-
         $this->db();
-        $nombrearchivo = str_replace(" ", "_", $data['proyecto']);
-        $nombrearchivo = substr($nombrearchivo, 0, 20);
+        try {
+            $this->db->beginTransaction();
+            $nombrearchivo = str_replace(" ", "_", $data['proyecto']);
+            $nombrearchivo = substr($nombrearchivo, 0, 20);
 
-        $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,
+            $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,
         fecha_fin, id_departamento) 
         VALUES (:proyecto, :descripcion, :fecha_inicio, :fecha_fin
         ,:id_departamento)";
 
-        $sesubio = $this->uploadfile("archivo", "uploads/proyectos/", $nombrearchivo);
+            $sesubio = $this->uploadfile("archivo", "uploads/proyectos/", $nombrearchivo);
 
-        if ($sesubio) {
-            $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,
+            if ($sesubio) {
+                $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,
         fecha_fin, id_departamento, archivo) 
         VALUES (:proyecto, :descripcion, :fecha_inicio, :fecha_fin
         ,:id_departamento, :archivo)";
+            }
+
+            $st = $this->db->prepare($sql);
+            $st->bindParam(":proyecto", $data['proyecto'], PDO::PARAM_STR);
+            $st->bindParam(":descripcion", $data['descripcion'], PDO::PARAM_STR);
+            $st->bindParam(":fecha_inicio", $data['fecha_inicio'], PDO::PARAM_STR);
+            $st->bindParam(":fecha_fin", $data['fecha_fin'], PDO::PARAM_STR);
+            $st->bindParam(":id_departamento", $data['id_departamento'], PDO::PARAM_INT);
+
+            if ($sesubio) {
+                $st->bindParam(":archivo", $sesubio, PDO::PARAM_STR);
+            }
+            $st->execute();
+
+            $rc = $st->rowCount();
+        } catch (PDOException $Exception) {
+            $rc = 0;
+            //print "DBA FAIL:" . $Exception->getMessage();
+            $this->db->rollBack();
         }
 
-        $st = $this->db->prepare($sql);
-        $st->bindParam(":proyecto", $data['proyecto'], PDO::PARAM_STR);
-        $st->bindParam(":descripcion", $data['descripcion'], PDO::PARAM_STR);
-        $st->bindParam(":fecha_inicio", $data['fecha_inicio'], PDO::PARAM_STR);
-        $st->bindParam(":fecha_fin", $data['fecha_fin'], PDO::PARAM_STR);
-        $st->bindParam(":id_departamento", $data['id_departamento'], PDO::PARAM_INT);
-
-        if ($sesubio) {
-            $st->bindParam(":archivo", $sesubio, PDO::PARAM_STR);
-        }
-        $st->execute();
-
-        $rc = $st->rowCount();
         return $rc;
     }
 
     public function delete($id)
     {
         $this->db();
-        $sql = "DELETE FROM tarea WHERE id_proyecto=:id";
-        $st = $this->db->prepare($sql);
-        $st->bindParam(":id", $id, PDO::PARAM_INT);
-        $st->execute();
-        $sql = "DELETE FROM proyecto WHERE id_proyecto=:id";
-        $st = $this->db->prepare($sql);
-        $st->bindParam(":id", $id, PDO::PARAM_INT);
-        $st->execute();
+        try {
+            $this->db->beginTransaction();
+            $sql = "DELETE FROM tarea WHERE id_proyecto=:id";
+            $st = $this->db->prepare($sql);
+            $st->bindParam(":id", $id, PDO::PARAM_INT);
 
-        $rc = $st->rowCount();
+            $sql2 = "DELETE FROM proyecto where id_proyecto=:id";
+            $st2 = $this->db->prepare($sql2);
+            $st2->bindParam(":id", $id, PDO::PARAM_INT);
+            $st->execute();
+            $st2->execute();
+            $rc = $st2->rowCount();
+            $this->db->commit();
+        } catch (PDOException $Exception) {
+            $rc = 0;
+            //print "DBA FAIL:" . $Exception->getMessage();
+            $this->db->rollBack();
+        }
         return $rc;
     }
 
@@ -146,7 +161,7 @@ class Proyecto extends Sistema
         return $rc;
     }
 
-    public function newTask ($id, $data)
+    public function newTask($id, $data)
     {
         $this->db();
         $sql = "INSERT INTO tarea (id_proyecto, tarea, avance) VALUES (:id_proyecto, :tarea, :avance)";
@@ -162,7 +177,7 @@ class Proyecto extends Sistema
 
     public function getTaskOne($id)
     {
-        $data=null;
+        $data = null;
         $this->db();
         if (is_null($id)) {
             die("Ocurrio un error :c");
@@ -195,7 +210,16 @@ class Proyecto extends Sistema
         $rc = $st->rowCount();
         return $rc;
     }
+    public function chartProyecto()
+    {
+        $this->db();
+        $sql = "select month(p.fecha_inicio) as mes,count(p.id_proyecto) as cantidad from proyecto p
+            order by 1 asc ";
+        $st = $this->db->prepare($sql);
+        $st->execute();
+        $data = $st->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
 }
 
 $proyecto = new Proyecto; //Objeto de la clase Proyecto
-?>
