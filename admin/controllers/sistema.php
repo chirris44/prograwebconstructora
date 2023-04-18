@@ -181,10 +181,16 @@ class Sistema
     public function forgot($destinatario, $token)
     {
         if ($this->validateEmail($destinatario)) {
-            $token=$this ->generarToken($destinatario);
-            require '../vendor/autoload.php';
+            require '../../vendor/autoload.php';
             $mail = new PHPMailer();
             $mail->isSMTP();
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;
+            $mail->Host = 'smtp.gmail.com';
+            $mail->Port = 465;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->SMTPAuth = true;
+            $mail->Username = '20030115@itcelaya.edu.mx';
+            $mail->Password = 'tconvjrrlnbsjzpa';
             $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
             $mail->addAddress($destinatario, 'Sistema Constructora');
             $mail->Subject = 'Recuperacion de contraseña';
@@ -196,11 +202,18 @@ class Sistema
             ";
             $mail->msgHTML($mensaje);
             if (!$mail->send()) {
-                echo 'Mailer Error: ' . $mail->ErrorInfo;
                 //echo 'Mailer Error: ' . $mail->ErrorInfo;
             } else {
-                echo 'Message sent!';
                 //echo 'Message sent!';
+            }
+            function save_mail($mail)
+            {
+                $path = '{imap.gmail.com:993/imap/ssl}[Gmail]/Sent Mail';
+                $imapStream = imap_open($path, $mail->Username, $mail->Password);
+                $result = imap_append($imapStream, $path, $mail->getSentMIMEMessage());
+                imap_close($imapStream);
+
+                return $result;
             }
         }
     }
