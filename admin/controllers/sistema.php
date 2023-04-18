@@ -44,6 +44,10 @@ class Sistema
         }
         return $name;
     }
+
+    /**
+     * Metodo para validar correo y contrasena
+     */
     public function login($correo, $contrasena)
     {
         if (!is_null($contrasena)) {
@@ -51,7 +55,7 @@ class Sistema
                 if ($this->validateEmail($correo)) {
                     $contrasena = md5($contrasena);
                     $this->db();
-                    $sql = 'select id_usuario, correo from usuario where correo=:correo and contrasena=:contrasena';
+                    $sql = "SELECT id_usuario, correo FROM usuario where correo=:correo AND contrasena=:contrasena";
                     $st = $this->db->prepare($sql);
                     $st->bindParam(":correo", $correo, PDO::PARAM_STR);
                     $st->bindParam(":contrasena", $contrasena, PDO::PARAM_STR);
@@ -71,17 +75,24 @@ class Sistema
         return false;
     }
 
-    public function logout()
+    public function validateEmail($correo)
     {
-        unset($_SESSION["logeado"]);
-        session_destroy();
+        if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        }
+        return false;
     }
+
     public function getRoles($correo)
     {
         $roles = array();
         if ($this->validateEmail($correo)) {
             $this->db();
-            $sql = 'select r.rol from usuario u join usuario_rol ur on u.id_usuario=ur.id_usuario join rol r on ur.id_rol = r.id_rol where u.correo = :correo';
+            $sql = "SELECT r.rol 
+            FROM usuario AS u 
+            join usuario_rol AS ur on u.id_usuario=ur.id_usuario 
+            join rol AS r on ur.id_rol=r.id_rol 
+            WHERE u.correo=:correo";
             $st = $this->db->prepare($sql);
             $st->bindParam(":correo", $correo, PDO::PARAM_STR);
             $st->execute();
@@ -92,12 +103,17 @@ class Sistema
         }
         return $roles;
     }
+
     public function getPrivilegios($correo)
     {
         $privilegios = array();
         if ($this->validateEmail($correo)) {
             $this->db();
-            $sql = 'select p.privilegio from usuario u join usuario_rol ur on u.id_usuario=ur.id_usuario join rol r on ur.id_rol = r.id_rol join rol_privilegio rp on r.id_rol = rp.id_rol join privilegio p on rp.id_privilegio= p.id_privilegio where u.correo = :correo';
+            $sql = "SELECT p.privilegio FROM usuario as u join usuario_rol as ur on u.id_usuario=ur.id_usuario 
+            join rol as r on ur.id_rol=r.id_rol 
+            join rol_privilegio as rp on r.id_rol=rp.id_rol
+            join privilegio as p on rp.id_privilegio=p.id_privilegio 
+            where u.correo=:correo";
             $st = $this->db->prepare($sql);
             $st->bindParam(":correo", $correo, PDO::PARAM_STR);
             $st->execute();
@@ -108,62 +124,64 @@ class Sistema
         }
         return $privilegios;
     }
-    public function validateEmail($correo)
-    {
-        if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            return true;
-        }
-        return false;
-    }
+
     public function validateRol($rol)
     {
         if (isset($_SESSION['validado'])) {
-            if ($_SESSION['validado']) {
+            if ($_SESSION['validado'] = true) {
                 if (isset($_SESSION['roles'])) {
                     if (!in_array($rol, $_SESSION['roles'])) {
-                        $this->killApp('No tienes el rol adecuado');
+                        $this->killApp('No tienes el rol adecuado.');
                     }
                 } else {
-                    $this->killApp('No tienes roles asignados');
+                    $this->killApp('No tienes roles asignados.');
                 }
             } else {
-                $this->killApp('No estas validado');
+                $this->killApp('No estas validado.');
             }
         } else {
-            $this->killApp('No te has logueado');
+            $this->killApp('No te has logeado.');
         }
     }
+
     public function validatePrivilegio($privilegio)
     {
         if (isset($_SESSION['validado'])) {
-            if ($_SESSION['validado']) {
+            if ($_SESSION['validado'] = true) {
                 if (isset($_SESSION['privilegios'])) {
                     if (!in_array($privilegio, $_SESSION['privilegios'])) {
-                        $this->killApp('No tienes el privilegio adecuado');
+                        $this->killApp('No tienes el privilegio adecuado.');
                     }
                 } else {
-                    $this->killApp('No tienes privilegios asignados');
+                    $this->killApp('No tienes privilegios asignados.');
                 }
             } else {
-                $this->killApp('No estas validado');
+                $this->killApp('No estas validado.');
             }
         } else {
-            $this->killApp('No te has logueado');
+            $this->killApp('No te has logeado.');
         }
     }
-    public function killApp($mensaje)
+
+    public function killApp($msg)
     {
         ob_end_clean();
-        include('views/header_error.php');
-        $this->flash('danger', $mensaje);
-        include('views/footer_error.php');
+        include("views/header_error.php");
+        $this->flash('danger', $msg);
+        include("views/footer_error.php");
         die();
     }
-    public function forgot($destinatario)
+
+    public function logout()
+    {
+        unset($_SESSION['logeado']);
+        session_destroy();
+    }
+
+    public function forgot($destinatario, $token)
     {
         if ($this->validateEmail($destinatario)) {
-            $token=$this ->generarToken($destinatario);
-            require '../vendor/autoload.php';
+            require '../../vendor/autoload.php';
             $mail = new PHPMailer();
             $mail->isSMTP();
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
@@ -171,29 +189,73 @@ class Sistema
             $mail->Port = 465;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->SMTPAuth = true;
-            $mail->Username = '19030406@itcelaya.edu.mx';
-            $mail->Password = 'yltqxblyeduegssh';
-            $mail->setFrom('19030406@itcelaya.edu.mx', 'Alejandra Plancarte');
+            $mail->Username = '20030115@itcelaya.edu.mx';
+            $mail->Password = 'tconvjrrlnbsjzpa';
+            $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
             $mail->addAddress($destinatario, 'Sistema Constructora');
             $mail->Subject = 'Recuperacion de contraseña';
             $mail->msgHTML('Esto es una prueba de recuperacion ' . $token);
+            $mensaje = "
+                Estimado usuario. <br>
+                <a href=\"http://localhost/prograwebconstructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Presione aqui para recuperar la contraseña.</a> <br>
+                Atentamente Constructora.
+            ";
+            $mail->msgHTML($mensaje);
             if (!$mail->send()) {
-                echo 'Mailer Error: ' . $mail->ErrorInfo;
+                //echo 'Mailer Error: ' . $mail->ErrorInfo;
             } else {
-                echo 'Message sent!';
+                //echo 'Message sent!';
+            }
+            function save_mail($mail)
+            {
+                $path = '{imap.gmail.com:993/imap/ssl}[Gmail]/Sent Mail';
+                $imapStream = imap_open($path, $mail->Username, $mail->Password);
+                $result = imap_append($imapStream, $path, $mail->getSentMIMEMessage());
+                imap_close($imapStream);
+
+                return $result;
             }
         }
     }
-    public function generarToken($correo){
+
+    public function generarToken($correo)
+    {
         $token = "papaschicas";
-        $n=rand(1,1000000);
+        $n = rand(1, 100000);
         $x = md5(md5($token));
         $y = md5($x . $n);
         $token = md5($y);
-        $token= md5($token . 'calamardo');
-        $token = md5('patricio'). md5($token . $correo);
+        $token = md5($token . 'calamardo');
+        $token = md5('patricio') . md5($token . $correo);
         return $token;
     }
+
+    public function loginSend($correo)
+    {
+        $data2 = 0;
+        if ($this->validateEmail($correo)) {
+            $this->db();
+            $sql = "SELECT correo FROM usuario where correo=:correo";
+            $st = $this->db->prepare($sql);
+            $st->bindParam(':correo', $correo, PDO::PARAM_STR);
+            $st->execute();
+            $data = $st->fetchAll(PDO::FETCH_ASSOC);
+            if (isset($data[0])) {
+                $token = $this->generarToken($correo);
+                $sql2 = "UPDATE usuario SET token=:token WHERE correo=:correo";
+                $st2 = $this->db->prepare($sql2);
+                $st2->bindParam(':token', $token, PDO::PARAM_STR);
+                $st2->bindParam(':correo', $correo, PDO::PARAM_STR);
+                $st2->execute();
+
+                $data2 = $st2->rowCount();
+                $this->forgot($correo, $token);
+            }
+        }
+        return $data2;
+    }
 }
+
 $sistema = new Sistema;
+
 ?>
