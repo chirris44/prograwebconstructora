@@ -181,7 +181,7 @@ class Sistema
     public function forgot($destinatario, $token)
     {
         if ($this->validateEmail($destinatario)) {
-            require '../../vendor/autoload.php';
+            require '../vendor/autoload.php';
             $mail = new PHPMailer();
             $mail->isSMTP();
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
@@ -190,16 +190,16 @@ class Sistema
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->SMTPAuth = true;
             $mail->Username = '20030115@itcelaya.edu.mx';
-            $mail->Password = 'tconvjrrlnbsjzpa';
+            $mail->Password = 'cprfuoeonnqgnovu';
             $mail->setFrom('20030115@itcelaya.edu.mx', 'Christian');
-            $mail->addAddress($destinatario, 'Sistema Constructora');
-            $mail->Subject = 'Recuperacion de contraseña';
-            $mail->msgHTML('Esto es una prueba de recuperacion ' . $token);
+            $mail->addAddress(utf8_decode($destinatario), 'Sistema Constructora');
+            $mail->Subject = utf8_decode('Recuperación de contraseña');
             $mensaje = "
-                Estimado usuario. <br>
-                <a href=\"http://localhost/prograwebconstructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Presione aqui para recuperar la contraseña.</a> <br>
-                Atentamente Constructora.
+            <p>Estimado usuario</p>
+            <p>Presione <a href=\"http://localhost/prograweb1/prograweb1/constructora/admin/login.php?action=recovery&token=$token&correo=$destinatario\">Aquí</a> para recuperar la contraseña</p>
+            <p>Atentamente la Constructora.</p>
             ";
+            $mensaje = utf8_decode($mensaje);
             $mail->msgHTML($mensaje);
             if (!$mail->send()) {
                 //echo 'Mailer Error: ' . $mail->ErrorInfo;
