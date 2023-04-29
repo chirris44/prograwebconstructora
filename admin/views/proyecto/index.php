@@ -44,6 +44,10 @@
 
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a href="reporte.php?action=proyecto&id=<?php echo $proyecto["id_proyecto"] ?>" target="_blank"
+                                        type="button" class="btn btn-primary">Imprimir</a>
+                                    <a href="generarExcel.php?action=proyecto&id=<?php echo $proyecto["id_proyecto"] ?>" target="_blank"
+                                        type="button" class="btn btn-primary">Hoja Excel</a>
                                     <a href="proyecto.php?action=task&id=<?php echo $proyecto["id_proyecto"] ?>"
                                         type="button" class="btn btn-dark">Tareas</a>
                                     <a href="proyecto.php?action=edit&id=<?php echo $proyecto["id_proyecto"] ?>"

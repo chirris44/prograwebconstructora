@@ -23,14 +23,13 @@ $reporte=$proyecto->chartProyecto();
 
         // Create the data table.
         var data = google.visualization.arrayToDataTable([
-        <?php foreach($reporte as $key => $value):?>
-             
-         ['<?php echo $value['mes'];?>', <?php echo $value['cantidad'];?>, 'silver']          // English color name
-         <?php endforeach;?>
+         ['Element', 'Density', { role: 'style' }],
+         <?php foreach($reporte as $key => $value):?>
+          ['<?php echo $value['mes']; ?>', <?php echo $value['cantidad']; ?>, '#b87333'], // CSS-style declaration
+          <?php endforeach; ?>
       ]);
-
         // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
+        var options = {'title':'Proyectos mensuales',
                        'width':400,
                        'height':300};
 
