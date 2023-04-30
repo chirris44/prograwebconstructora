@@ -8,6 +8,13 @@
             </p>
         </div>
     </div>
+    <div class="row">
+        <div class="col-3">
+            <p><a class="btn btn-success" href="privilegio.php"
+                    role="button">Privilegios</a>
+            </p>
+        </div>
+    </div>
     <table class="table table-responsive table-bordered">
         <thead>
         <tr>
@@ -26,6 +33,8 @@
                         <div class="btn-group" role="group" aria-label="Basic example">
                         <a href="rol.php?action=edit&id=<?php echo $rol["id_rol"] ?>"
                                         type="button" class="btn btn-primary">Modificar</a>
+                        <a href="rol.php?action=newPrivilegio&id=<?php echo $rol["id_rol"] ?>"
+                                        type="button" class="btn btn-success">Nuevo Privilegio</a>
                                     <a href="rol.php?action=delete&id=<?php echo $rol["id_rol"] ?>"
                                         type="button" class="btn btn-danger">Eliminar</a>
                         </div>

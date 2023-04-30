@@ -26,7 +26,7 @@ $id = (isset($_GET['id'])) ? $_GET['id'] : null;
 
                 <div class="col-md-6">
 
-                    <div id="results">Your captured image will appear here...</div>
+                    <div id="results">Tu foto aparecera aqui...</div>
 
                 </div>
 

@@ -56,6 +56,19 @@ class Rol extends Sistema
         $rc = $st->rowCount();
         return $rc;
     }
+    public function newPrivilegio($id,$data){
+        $this->db();
+        $sql = "INSERT INTO rol_privilegio (id_rol,id_privilegio) 
+        VALUES (:id,:id_privilegio)";
+
+        $st = $this->db->prepare($sql);
+        $st->bindParam(":id", $id, PDO::PARAM_INT);
+        $st->bindParam(":id_privilegio", $data['id_privilegio'], PDO::PARAM_INT);
+        $st->execute();
+
+        $rc = $st->rowCount();
+        return $rc;
+    }
 }
 $rol = new Rol;
 ?>

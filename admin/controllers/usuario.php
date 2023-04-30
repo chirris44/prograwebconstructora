@@ -56,14 +56,26 @@ class Usuario extends Sistema
     {
         $this->db();
             $sql = "UPDATE usuario 
-        SET telefono =(correo =:correo,contrasena =:contrasena
+        SET correo =:correo
          where id_usuario =:id";
        
         $st = $this->db->prepare($sql);
         $st->bindParam(":id", $id, PDO::PARAM_INT);
         $st->bindParam(":correo", $data['correo'], PDO::PARAM_STR);
-        $st->bindParam(":contrasena", $data['contrasena'], PDO::PARAM_STR);
         $st->execute();
+        $rc = $st->rowCount();
+        return $rc;
+    }
+    public function newRole($id,$data){
+        $this->db();
+        $sql = "INSERT INTO usuario_rol (id_usuario,id_rol) 
+        VALUES (:id,:id_rol)";
+
+        $st = $this->db->prepare($sql);
+        $st->bindParam(":id", $id, PDO::PARAM_INT);
+        $st->bindParam(":id_rol", $data['id_rol'], PDO::PARAM_INT);
+        $st->execute();
+
         $rc = $st->rowCount();
         return $rc;
     }

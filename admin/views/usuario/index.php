@@ -32,6 +32,8 @@
                                         type="button" class="btn btn-primary">Modificar</a>
                                     <a href="usuario.php?action=delete&id=<?php echo $usuario["id_usuario"] ?>"
                                         type="button" class="btn btn-danger">Eliminar</a>
+                                <a href="usuario.php?action=newRole&id=<?php echo $usuario["id_usuario"] ?>"
+                                        type="button" class="btn btn-success">Nuevo Rol</a>
                         </div>
                     </td>
                 </tr>

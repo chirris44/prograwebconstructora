@@ -26,9 +26,6 @@ class Empleado extends Sistema
         $validado = $this->validate_curp($data['curp']);
         $rc=0;
         if($validado){
-            print_r($validado);
-            print_r($data);
-            die();
             $this->db();
         $sql = "INSERT INTO empleado (nombre,primer_apellido,segundo_apellido,
         fecha_nacimiento,rfc,curp,id_departamento) VALUES 
