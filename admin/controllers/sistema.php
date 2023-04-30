@@ -299,10 +299,9 @@ class Sistema
            $sexo       = substr($valor, 10, 1);
            $mxState    = substr($valor, 11, 2); 
            $letras2    = substr($valor, 13, 3); 
-           $homoclave  = substr($valor, 16, 2);
            $estado=$this->is_mx_state($mxState); 
            $sexo=$this->is_sexo_curp($sexo);
-             if(ctype_alpha($letras) && ctype_alpha($letras2) && ctype_digit($numeros) && ctype_digit($homoclave) && $estado && $sexo){ 
+             if(ctype_alpha($letras) && ctype_alpha($letras2) && ctype_digit($numeros) && $estado && $sexo){ 
                return true; 
            }         
        return false;

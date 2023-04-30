@@ -31,8 +31,8 @@
                         Usuarios
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="roles.php">Roles</a></li>
-                        <li><a class="dropdown-item" href="usuarios.php">Usuarios</a></li>
+                        <li><a class="dropdown-item" href="rol.php">Roles</a></li>
+                        <li><a class="dropdown-item" href="usuario.php">Usuarios</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
