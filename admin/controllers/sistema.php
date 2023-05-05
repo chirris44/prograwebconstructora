@@ -330,6 +330,27 @@ public function is_sexo_curp($sexo){
     }     
     return false; 
 }
+function cargarImagen($id,$atributo,$ruta){
+    $resultado=false;
+    $extensiones=array("image/jpeg","image/png","image/gif");
+    if(isset($_FILES[$atributo])){
+        if($_FILES[$atributo]['error']==0){
+            if($_FILES[$atributo]['size']<=1000*1024){
+                if(in_array($_FILES[$atributo]['type'],$extensiones)){
+                    $extension=explode('.',$_FILES[$atributo]['name']);
+                    $extension=$extension[count($extension)-1];
+                    $ruta=$ruta.$id.".".$extension;
+                    if(move_uploaded_file($_FILES[$atributo]['tmp_name'],$ruta)){
+                        $resultado=$ruta;
+                    }else{
+                        $resultado=false;
+                    }
+                }
+            }
+        } 
+    }
+    return $resultado;
+}
 }
 
 $sistema = new Sistema;

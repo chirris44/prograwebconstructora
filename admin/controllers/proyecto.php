@@ -94,7 +94,6 @@ class Proyecto extends Sistema
 
     public function edit($id, $data)
     {
-        $archivo_fijo = "ruta/";
 
         $this->db();
         $nombrearchivo = str_replace(" ", "_", $data['proyecto']);
