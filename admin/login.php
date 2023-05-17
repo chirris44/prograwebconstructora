@@ -1,5 +1,5 @@
 <?php
-include('controllers/sistema.php');
+include(__DIR__.'/controllers/sistema.php');
 include_once("views/header.php");
 
 $action = (isset($_GET['action'])) ? $_GET['action'] : "login";

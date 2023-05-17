@@ -28,9 +28,7 @@
         <input type="submit" name="enviar" value="Guardar" class="btn btn-primary" />
 
     </div>
-</form>
-
-<script>
+    <script>
     const value = document.querySelector("#value")
     const input = document.querySelector("#por_avance")
     value.textContent = input.value
@@ -38,3 +36,5 @@
         value.textContent = event.target.value
     })
 </script>
+</form>
+

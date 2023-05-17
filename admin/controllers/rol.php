@@ -1,7 +1,17 @@
 <?php
-require_once("sistema.php");
+require_once(__DIR__."/sistema.php");
 class Rol extends Sistema
 {
+    public function getExcept($id){
+        $this->db();
+        $sql="select * from rol where id_rol not in(select ur.id_rol from rol join usuario_rol
+        ur on rol.id_rol = ur.id_rol where id_usuario=:id)";
+        $st=$this->db->prepare($sql);
+        $st->bindParam(":id",$id,PDO::PARAM_INT);
+        $st->execute();
+        $data = $st->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
     public function get($id = null)
     {
         $this->db();

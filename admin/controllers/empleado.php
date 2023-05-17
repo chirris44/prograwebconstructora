@@ -1,5 +1,5 @@
 <?php
-require_once("sistema.php");
+require_once(__DIR__."/sistema.php");
 class Empleado extends Sistema
 {
     public function get($id = null)
@@ -93,5 +93,4 @@ class Empleado extends Sistema
     }
 }
 $empleado = new Empleado;
-?>
 ?>

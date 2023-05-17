@@ -2,8 +2,9 @@
 session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-
-require_once('config.php');
+//echo(__DIR__.'/../config.php');
+//die();
+require_once(__DIR__.'/../config.php');
 class Sistema
 {
 
@@ -27,7 +28,6 @@ class Sistema
         $uploads['fotografia'] = array("image/jpeg", "image/jpg", "image/gif", "image/png");
         if ($_FILES[$tipo]['error'] == 4) {
             return $name;
-
         }
         if ($_FILES[$tipo]['error'] == 0) {
             if (in_array($_FILES[$tipo]['type'], $uploads['archivo'])) {

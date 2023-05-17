@@ -1,8 +1,8 @@
 <?php 
 require_once("controllers/departamento.php");
 $sistema -> validateRol('Usuario');
-include_once("controllers/sistema.php");
-include_once("controllers/proyecto.php");
+include_once(__DIR__."/controllers/sistema.php");
+include_once(__DIR__."/controllers/proyecto.php");
 include_once("views/header.php");
 include_once("views/menu.php");
 $reporte=$proyecto->chartProyecto();

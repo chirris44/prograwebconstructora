@@ -1,6 +1,16 @@
 <?php
-require_once("sistema.php");
+require_once(__DIR__."/sistema.php");
 class Privilegio extends Sistema{
+    public function getExcept($id){
+        $this->db();
+        $sql="select * from privilegio where id_privilegio not in(select rp.id_privilegio from privilegio join rol_privilegio
+        rp on privilegio.id_privilegio = rp.id_privilegio where id_rol=:id)";
+        $st=$this->db->prepare($sql);
+        $st->bindParam(":id",$id,PDO::PARAM_INT);
+        $st->execute();
+        $data = $st->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
     public function get($id=null){
         $this->db();
         if(is_null($id)){
@@ -48,6 +58,12 @@ class Privilegio extends Sistema{
         $st = $this->db->prepare($sql);
         $st->bindParam(":id", $id, PDO::PARAM_INT);
         $st->execute();
+
+        $this->db();
+        $sql2 = "DELETE FROM rol_privilegio WHERE id_privilegio=:id";
+        $st2 = $this->db->prepare($sql);
+        $st2->bindParam(":id", $id, PDO::PARAM_INT);
+        $st2->execute();
 
         $rc = $st->rowCount();
         return $rc;

@@ -1,5 +1,5 @@
 <?php
-require_once("controllers/privilegio.php");
+require_once(__DIR__."/controllers/privilegio.php");
 include_once("views/header.php");
 include_once("views/menu.php");
 $action = (isset($_GET['action'])) ? $_GET['action'] : "getAll";

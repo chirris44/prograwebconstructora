@@ -1,5 +1,5 @@
 <?php
-require_once("sistema.php");
+require_once(__DIR__."/sistema.php");
 class Departamento extends Sistema
 {
     public function get($id = null)
@@ -17,8 +17,6 @@ class Departamento extends Sistema
             $st->execute();
             $data = $st->fetchAll(PDO::FETCH_ASSOC);
         }
-
-
         return $data;
     }
 
@@ -56,6 +54,7 @@ class Departamento extends Sistema
         $rc = $st->rowCount();
         return $rc;
     }
+
 }
 $departamento = new Departamento;
 ?>

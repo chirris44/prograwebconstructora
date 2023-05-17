@@ -8,6 +8,14 @@
             </p>
         </div>
     </div>
+    <div id="paypal-button-container">
+                        <script>
+                            paypal.Buttons({
+                                // Order is created on the server and the order id is returned
+
+                            }).render('#paypal-button-container');
+                        </script>
+                        </div>
     <table class="table table-responsive table-bordered">
         <thead>
         <tr>
@@ -28,6 +36,9 @@
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
+                        <script src="https://www.paypal.com/sdk/js?client-id=AUvZPFSl5AKkbZepv6kIDq9-mzVUNPlSalQu3rdp8IzEDhJKdnrco_pqEHLYIMTQFT-UkF8XJLbG67NM&currency=MXN"></script>
+                        <!-- Set up a container element for the button -->
+                        
                         <a href="usuario.php?action=edit&id=<?php echo $usuario["id_usuario"] ?>"
                                         type="button" class="btn btn-primary">Modificar</a>
                                     <a href="usuario.php?action=delete&id=<?php echo $usuario["id_usuario"] ?>"

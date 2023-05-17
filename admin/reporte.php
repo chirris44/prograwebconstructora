@@ -1,5 +1,5 @@
 <?php 
-require_once("controllers/sistema.php");
+require_once(__DIR__."/controllers/sistema.php");
 require_once ('../vendor/autoload.php');
 use Spipu\Html2Pdf\Html2Pdf;
 $html2pdf = new Html2Pdf();

@@ -1,6 +1,6 @@
 <?php
-require_once("controllers/rol.php");
-require_once("controllers/privilegio.php");
+require_once(__DIR__."/controllers/rol.php");
+require_once(__DIR__."/controllers/privilegio.php");
 include_once("views/header.php");
 include_once("views/menu.php");
 $action = (isset($_GET['action'])) ? $_GET['action'] : "getAll";
@@ -54,7 +54,6 @@ switch ($action) {
         }
         break;
         case 'newPrivilegio':
-            $data_privilegio = $privilegio->get();
         if (isset($_POST['enviar'])) {
             $data = $_POST['data'];
             $id = $_POST['data']['id_rol'];

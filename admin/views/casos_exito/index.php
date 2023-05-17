@@ -1,5 +1,6 @@
 <h1 class="text-center">Casos de Exito</h1>
 <a href="casos_exito.php?action=new" class="btn btn-success">Nuevo</a>
+<a href="casos_exito.php?action=user" type="button" class="btn btn-danger">Casos</a>
 <table class="table table-responsive table-bordered">
     <thead>
         <tr>
@@ -60,3 +61,4 @@
         </tr>
     </tbody>
 </table>
+<?php

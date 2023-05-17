@@ -1,6 +1,6 @@
 <?php
-require_once("controllers/usuario.php");
-require_once("controllers/rol.php");
+require_once(__DIR__."/controllers/usuario.php");
+require_once(__DIR__."/controllers/rol.php");
 include_once("views/header.php");
 include_once("views/menu.php");
 $action = (isset($_GET['action'])) ? $_GET['action'] : "getAll";
@@ -55,24 +55,23 @@ switch ($action) {
         }
         break;
         case 'newRole':
-            $data_rol = $rol->get();
-        if (isset($_POST['enviar'])) {
-            $data = $_POST['data'];
-            $id = $_POST['data']['id_usuario'];
-            $cantidad = $usuario->newRole($id,$data);
-            if ($cantidad) {
-                $usuario->flash('success', 'Registro dado de alta con éxito');
-                $data = $usuario->get(null);
-                include('views/usuario/index.php');
+            if (isset($_POST['enviar'])) {
+                $data = $_POST['data'];
+                $id = $_POST['data']['id_usuario'];
+                $cantidad = $usuario->newRole($id,$data);
+                if ($cantidad) {
+                    $usuario->flash('success', 'Registro dado de alta con éxito');
+                    $data = $usuario->get(null);
+                    include('views/usuario/index.php');
+                } else {
+                    $usuario->flash('danger', 'Algo fallo');
+                    include('views/usuario/role_form.php');
+                }
             } else {
-                $usuario->flash('danger', 'Algo fallo');
-                include('views/usuario/role_from.php');
+                $data = $usuario->get($id);
+                include('views/usuario/role_form.php');
             }
-        } else {
-            $data = $usuario->get($id);
-            include('views/usuario/role_form.php');
-        }
-        break;
+            break;
     case 'getAll':
     default:
         $data = $usuario->get(null);

@@ -1,14 +1,16 @@
+<?php require_once("controllers/privilegio.php");?>
 <h1>Nuevo privilegio de rol</h1>
 <form method="POST" action="rol.php?action=<?php echo $action; ?>">
     <div class="row">
         <div class="col-2">
-            <label for="id_privilegio">privilegio</label>
+            <label for="id_privilegio">Privilegio</label>
         </div>
     </div>
     <div class="row">
         <div class="col-2">
             <select name="data[id_privilegio]" required="required">
                 <?php
+                $data_privilegio = $privilegio->getExcept($data[0]['id_rol']);
                 $selected = " ";
                 foreach ($data_privilegio as $key => $privil):
                     if ($privil['id_privilegio'] == $data[0]['id_privilegio']):

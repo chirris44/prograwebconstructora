@@ -1,5 +1,5 @@
 <?php
-require_once("sistema.php");
+require_once(__DIR__."/sistema.php");
 class Casos_Exito extends Sistema
 {
     public function get($id = null)
@@ -77,6 +77,17 @@ class Casos_Exito extends Sistema
 
         $rc = $st->rowCount();
         return $rc;
+    }
+    public function user($id)
+    {
+        $this->db();
+        if (is_null($id)) {
+            $sql = "select caso_exito,imagen,descripcion from casos_exito";
+            $st = $this->db->prepare($sql);
+            $st->execute();
+            $data = $st->fetchAll();
+        } 
+        return $data;
     }
 }
 $casos_exito = new Casos_Exito;

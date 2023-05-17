@@ -1,6 +1,6 @@
 <?php
-require_once("controllers/proyecto.php");
-require_once("controllers/departamento.php");
+require_once(__DIR__."/controllers/proyecto.php");
+require_once(__DIR__."/controllers/departamento.php");
 include_once("views/header.php");
 include_once("views/menu.php");
 $proyecto -> validateRol('Lider');

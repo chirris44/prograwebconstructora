@@ -1,5 +1,5 @@
 <?php
-require_once("sistema.php");
+require_once(__DIR__ . "/sistema.php");
 class Proyecto extends Sistema
 {
     public function get($id = null)
@@ -37,7 +37,7 @@ class Proyecto extends Sistema
         VALUES (:proyecto, :descripcion, :fecha_inicio, :fecha_fin
         ,:id_departamento)";
 
-            $sesubio = $this->uploadfile("archivo", "uploads/proyectos/", $nombrearchivo);
+            $sesubio = $this->uploadfile($data['archivo'], "upload/proyectos/", $nombrearchivo);
 
             if ($sesubio) {
                 $sql = "INSERT INTO proyecto (proyecto, descripcion, fecha_inicio,

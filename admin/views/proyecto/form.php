@@ -3,7 +3,7 @@
 </h1>
 
 <form class="container-fluid" method="POST" action="proyecto.php?action=<?php echo ($action); ?>"
-    enctype="multipart/form-data">
+enctype="multipart/form-data">
 
     <div class="row">
         <div class="col-2">
@@ -93,7 +93,7 @@
         <a href="<?php echo $data[0]['archivo']?>" target="_blank">Descargar el adjunto actual</a>
         </div>
         <?php endif;?>
-            <input type="file" name="archivo" class="form-control"
+            <input type="file" name="data[archivo]" class="form-control"
                 value='<?php echo isset($data[0]['archivo']) ? $data[0]['archivo'] : ''; ?>' />
         </div>
     </div>
